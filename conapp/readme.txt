@@ -1,0 +1,1 @@
+Core console application built as /SUBSYSTEM:WINDOWS, to test CGrabber.

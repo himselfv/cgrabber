@@ -1,0 +1,1 @@
+Delphi GUI application which reads and writes to the console.

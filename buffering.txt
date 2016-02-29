@@ -1,0 +1,42 @@
+On buffering with output:
+http://man7.org/linux/man-pages/man3/setbuf.3.html
+
+> Normally all files are block buffered.  If a stream refers to a terminal (as stdout normally does), it is line buffered.
+> The standard error stream stderr is always unbuffered by default.
+
+Can be changed with setbuf, setlinebuf etc.
+
+But it seems that Visual C++ is even trickier. It works line-buffered (actually non-buffered, see below) if it's compiled as CONSOLE, block-buffered otherwise.
+
+direct: Wire console handles directly.
+cgrabber: Threaded pipe translation (no buffering by itself).
+cgrabber-flat: Flat translation: no additional threading for output/error.
+tee: Translate stdout through tee.
+
+CONSOLE, direct, f/printf: unbuffered
+CONSOLE, cgrabber, f/printf: buffered
+CONSOLE, tee, f/printf: buffered! (what goes through tee, prints in blocks)
+
+GUI, direct-attachconsole, f/printf+flush: nothing
+GUI, direct-wait, f/printf+flush: nothing
+GUI, cgrabber, f/printf: buffered
+GUI, cgrabber-flat, f/printf: buffered
+GUI, tee, f/printf: buffered (+flush: unbuffered)
+
+DELPHI-CONSOLE, direct: unbuffered
+DELPHI-CONSOLE, tee: delphi-buffered! (small buffer)
+DELPHI-CONSOLE, grabber-flat: delphi-buffered
+
+DELPHI-GUI, direct-attachconsole: unbuffered!
+DELPHI-GUI, tee: delphi-buffered!
+DELPHI-GUI, grabber-flat: delphi-buffered?
+
+RESUME
+
+direct+attachconsole: works for Delphi apps, doesn't for C++. (Maybe something can be done)
+cgrabber: works for all types of apps, always buffered
+cgrabber-threaded: works well, but threads aren't synced => sometimes a mess
+cgrabber-flat: works as well as -threaded.
+tee: works for all types of apps, but buffered.
+
+

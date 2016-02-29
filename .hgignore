@@ -1,0 +1,22 @@
+syntax:glob
+
+*.exe
+*.dll
+
+# Visual C++
+*.obj
+*.sdf
+*.opensdf
+*.suo
+*.user
+*.log
+*.tlog
+*.idb
+*.pdb
+*.ilk
+
+# Delphi
+*.dcu
+*.local
+*.identcache
+__history
